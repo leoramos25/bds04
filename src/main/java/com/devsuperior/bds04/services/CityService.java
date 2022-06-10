@@ -4,8 +4,12 @@ import com.devsuperior.bds04.dto.CityDTO;
 import com.devsuperior.bds04.entities.City;
 import com.devsuperior.bds04.repositories.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CityService {
@@ -18,5 +22,11 @@ public class CityService {
         city.setName(cityDTO.getName());
         city = cityRepository.save(city);
         return new CityDTO(city);
+    }
+    
+    @Transactional(readOnly = true)
+    public List<CityDTO> findAllCities() {
+        var cities = cityRepository.findAll(Sort.by("name"));
+        return cities.stream().map(CityDTO::new).collect(Collectors.toList());
     }
 }
