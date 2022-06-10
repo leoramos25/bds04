@@ -25,7 +25,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             "/events"
     };
     
-    private static final String CLIENT_OR_ADMIN_ENDPOINTS = "events/**";
+    private static final String CLIENT_OR_ADMIN_ENDPOINTS = "/events/**";
     
     @Autowired
     private Environment env;
@@ -46,7 +46,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(PUBLIC_ENDPOINT).permitAll()
                 .antMatchers(HttpMethod.GET, GET_PUBLIC_ENDPOINTS).permitAll()
-                .antMatchers(CLIENT_OR_ADMIN_ENDPOINTS).hasAnyRole("CLIENT", "ADMIN")
+                .antMatchers(CLIENT_OR_ADMIN_ENDPOINTS).hasAnyRole("ADMIN", "CLIENT")
                 .anyRequest().hasRole("ADMIN");
     }
 }
