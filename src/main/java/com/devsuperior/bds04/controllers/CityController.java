@@ -17,12 +17,12 @@ public class CityController {
     private CityService cityService;
     
     @PostMapping
-    public ResponseEntity<CityDTO> createCity(@Valid @RequestBody CityDTO dto) {
-        var cityDto = cityService.createCity(dto);
+    public ResponseEntity<CityDTO> createCity(@Valid @RequestBody CityDTO cityDto) {
+        cityDto = cityService.createCity(cityDto);
         var uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/id")
-                .buildAndExpand(dto.getId())
+                .path("/{id}")
+                .buildAndExpand(cityDto.getId())
                 .toUri();
         return ResponseEntity.created(uri).body(cityDto);
     }

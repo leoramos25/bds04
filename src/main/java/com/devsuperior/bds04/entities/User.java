@@ -5,9 +5,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,6 +21,7 @@ public class User implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Campo requerido")
     private String username;
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -91,5 +94,18 @@ public class User implements UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return getId().equals(user.getId());
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
